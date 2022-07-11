@@ -21,6 +21,56 @@
 - Springboot 2 부터 Connection Pool은 Hikari를 기본으로 사용된다.
 - slf4j는 로그 인터페이스 모음이며, 구현체로 logback, log4j, log4j2 등이 있다.
 
+### Thymeleaf
+#### 특징
+- 스프링과 연동되는 기능이 많으며, 스프링에서 전폭적으로 지원해주는 서버 사이드 뷰 엔진이다.
+- 자연스러운 템플릿으로 JSP처럼 기존의 HTML의 형식을 깨지 않는다.
+```html
+<!-- JSP -->
+<thead>
+  <tr>
+    <c:if test="${msgs.product.name ne null}">
+      <th th:text="msgs.product.name">name</th>
+      <th th:text="msgs.product.value">value</th>
+    </c:if>
+  </tr>
+</thead>
+```
+```html
+<!-- Thymeleaf -->
+<thead>
+  <tr>
+    <th th:text="#{msgs.product.name}">name</th>
+    <th th:text="#{msgs.product.value}">value</th>
+  </tr>
+</thead>
+```
+- Thymeleaf 3.0 이전의 경우는 성능상 이슈가 존재한다.
+- Thymeleaf 3.0 이전에서는 태그가 완전히 닫혀야지만 인식되는 문제가 존재한다.
+```html
+<!-- ERROR -->
+<br>
+```
+```html
+<!-- SUCCESS -->
+<br></br>
+```
+
+### Springboot DevTools
+- ```build.gradle```에 해당 의존성을 추가하면 뷰 파일 수정 시 매 번 재기동해이햐는 번거로움을 덜 수 있다.
+```
+dependencies {
+  ...
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-devtools'
+  compileOnly 'org.projectlombok:lombok'
+  ...
+}
+```
+- 해당 의존성 추가 후 부터는 뷰 파일 수정 후 재기동 없이 해당 파일을 리컴파일 하면 정상적으로 반영된다. (Ctrl+Shift+F9)
+- springboot 기동 시 아래 이미지처럼 restartedMain 문구가 뜨면 정상 적용된 것이다.
+![img.png](images/img3.png)
+
 ### Gradle 라이브러리 의존성 확인 방법
 - intelliJ IDEA 사용 시 Gradle 탭의 dependencies를 통해 확인할 수 있다.
 ![img.png](images/img2.png)
