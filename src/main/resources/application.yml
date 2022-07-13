@@ -1,0 +1,24 @@
+# Spring boot
+# https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/
+
+spring:
+  datasource:
+    # MVCC=TRUE
+    # - H2 DB? ?? ?? ???? ???? ???? ?
+    # - H2 1.4 ???? MVCC ??? ???? ???? ??? ??? ??? ??.
+#    url: jdbc:h2:tcp://localhost/~/springbootjpa;MVCC=TRUE
+    url: jdbc:h2:tcp://localhost/~/springbootjpa
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.H2Dialect
+#          show_sql: true
+          format_sql: true
+logging:
+  level:
+    org-hibernate.SQL : debug
