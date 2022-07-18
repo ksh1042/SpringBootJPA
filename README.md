@@ -122,3 +122,21 @@ void test(){
   // TODO --> do something
 }
 ```
+
+## 3. Gradle
+### 3.1. Gradle 빌드
+- ```./gradlew [clean] build``` 명령어를 쉘 커맨드에 입력 시 테스트가 통과되면 ```./build/libs```에 결과물을 출력한다.
+- 배포 파일 확장자(jar, war) 설정은 gradle.build 에 해당 라인을 추가하여 변경한다.
+```
+plugins {
+  id 'org.springframework.boot' version '2.7.1'
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'java'
+  id 'war'  // plubins id 추가
+}
+
+group = 'com.roman14'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+apply plugin: 'war' // plubin 'war' 적용
+```
