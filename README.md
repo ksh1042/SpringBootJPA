@@ -123,10 +123,35 @@ void test(){
 }
 ```
 
+### 2.2. 쿼리 파라미터 출력하기
+- application.yml 파일에 ```logging:level:org.hibernate.type : trace``` 프로퍼티를 추가하면 로그 라인으로 파라미터 바인딩이 출력된다.
+```yaml
+### application.yml
+logging:
+  level:
+    org.hibernate.type : trace
+``` 
+- [스프링 부트 데코레이터](https://github.com/gavlyukovskiy/spring-boot-data-source-decorator) 를 사용하여 SQL에 직접 바인딩된 파라미터 값을 로그로 출력할 수 있다.
+```
+// build.gradle
+// p6spy
+implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
+```
+```
+2022-07-18 22:31:23.515 TRACE 15988 --- [    Test worker] o.h.type.descriptor.sql.BasicBinder      : binding parameter [1] as [TIMESTAMP] - [2022-07-18T22:31:23.455165300]
+2022-07-18 22:31:23.516 TRACE 15988 --- [    Test worker] o.h.type.descriptor.sql.BasicBinder      : binding parameter [2] as [VARCHAR] - [user01]
+2022-07-18 22:31:23.517 TRACE 15988 --- [    Test worker] o.h.type.descriptor.sql.BasicBinder      : binding parameter [3] as [BIGINT] - [1]
+2022-07-18 22:31:23.519  INFO 15988 --- [    Test worker] p6spy                                    : #1658151083519 | took 0ms | statement | connection 3| url jdbc:h2:tcp://localhost/~/springbootjpa
+insert into member (add_time, name, id) values (?, ?, ?)
+insert into member (add_time, name, id) values ('2022-07-18T22:31:23.455+0900', 'user01', 1);
+2022-07-18 22:31:23.522  INFO 15988 --- [    Test worker] p6spy                                    : #1658151083522 | took 0ms | commit | connection 3| url jdbc:h2:tcp://localhost/~/springbootjpa
+```
+
+
 ## 3. Gradle
 ### 3.1. Gradle 빌드
 - ```./gradlew [clean] build``` 명령어를 쉘 커맨드에 입력 시 테스트가 통과되면 ```./build/libs```에 결과물을 출력한다.
-- 배포 파일 확장자(jar, war) 설정은 gradle.build 에 해당 라인을 추가하여 변경한다.
+- 배포 파일 확장자(jar, war) 설정은 build.gradle 에 해당 라인을 추가하여 변경한다.
 ```
 plugins {
   id 'org.springframework.boot' version '2.7.1'
