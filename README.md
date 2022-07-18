@@ -15,13 +15,13 @@
 ![img_hibernate](https://img.shields.io/badge/hibernate-59666C?style=for-the-badge&logo=hibernate&logoColor=white)
 ![img_h2](https://img.shields.io/badge/H2&nbsp;DB-113348?style=for-the-badge&logo=h2&logoColor=white)
 
-## 특이사항
+## 1. 특이사항
 - Lombok 사용 시 Intellij IDEA 설정에서 반드시 Enable annotation processing을 활성화 시켜주어야 한다.
 ![img.png](images/img.png)
 - Springboot 2 부터 Connection Pool은 Hikari를 기본으로 사용된다.
 - slf4j는 로그 인터페이스 모음이며, 구현체로 logback, log4j, log4j2 등이 있다.
 
-### Thymeleaf
+### 1.1. Thymeleaf
 #### 특징
 - 스프링과 연동되는 기능이 많으며, 스프링에서 전폭적으로 지원해주는 서버 사이드 뷰 엔진이다.
 - 자연스러운 템플릿으로 JSP처럼 기존의 HTML의 형식을 깨지 않는다.
@@ -56,7 +56,7 @@
 <br></br>
 ```
 
-### Springboot DevTools
+### 1.2. Springboot DevTools
 - ```build.gradle```에 해당 의존성을 추가하면 뷰 파일 수정 시 매 번 재기동해이햐는 번거로움을 덜 수 있다.
 ```
 dependencies {
@@ -71,7 +71,7 @@ dependencies {
 - springboot 기동 시 아래 이미지처럼 restartedMain 문구가 뜨면 정상 적용된 것이다.
 ![img.png](images/img3.png)
 
-### Gradle 라이브러리 의존성 확인 방법
+### 1.3. Gradle 라이브러리 의존성 확인 방법
 - intelliJ IDEA 사용 시 Gradle 탭의 dependencies를 통해 확인할 수 있다.
 ![img.png](images/img2.png)
 - 터미널에서 프로젝트 홈 경로에 있는 ```gradlew ```를 실행해주면 의존성을 확인할 수 있다.
@@ -109,4 +109,16 @@ compileClasspath - Compile classpath for source set 'main'.
 ...
 ...
 ...
+```
+
+## 2. 테스트
+### 2.1. ```@Rollback(false)```
+- ```@Transactional``` 어노테이션 사용 시 테스트 환경에서 트랜잭션 의존성 주입을 받는데, 테스트 종료 후 강제로 롤백을 수행하기 때문에 직접 데이터베이스에 적용된 것을 확인하고 싶으면 해당 롤백 어노테이션을 사용하여 수동으로 제어해야 한다.
+```java
+@Test
+@Transactional
+@Rollback(false)
+void test(){
+  // TODO --> do something
+}
 ```
