@@ -5,6 +5,7 @@
 - JPA와 SpringBoot를 접목시킨 웹 어플리케이션 개발 방법 복습
 - Swagger를 통한 통합 테스트 환경 복습
 - DDD 개발법 학습
+  ![img.png](images/img4.png)
 
 ## Stack
 ![img_java](https://img.shields.io/badge/java&nbsp;11-007396?style=for-the-badge&logo=java&logoColor=white)
@@ -17,7 +18,7 @@
 
 ## 1. 특이사항
 - Lombok 사용 시 Intellij IDEA 설정에서 반드시 Enable annotation processing을 활성화 시켜주어야 한다.
-![img.png](images/img.png)
+  ![img.png](images/img.png)
 - Springboot 2 부터 Connection Pool은 Hikari를 기본으로 사용된다.
 - slf4j는 로그 인터페이스 모음이며, 구현체로 logback, log4j, log4j2 등이 있다.
 
@@ -28,21 +29,21 @@
 ```html
 <!-- JSP -->
 <thead>
-  <tr>
-    <c:if test="${msgs.product.name ne null}">
-      <th th:text="msgs.product.name">name</th>
-      <th th:text="msgs.product.value">value</th>
-    </c:if>
-  </tr>
+<tr>
+  <c:if test="${msgs.product.name ne null}">
+    <th th:text="msgs.product.name">name</th>
+    <th th:text="msgs.product.value">value</th>
+  </c:if>
+</tr>
 </thead>
 ```
 ```html
 <!-- Thymeleaf -->
 <thead>
-  <tr>
-    <th th:text="#{msgs.product.name}">name</th>
-    <th th:text="#{msgs.product.value}">value</th>
-  </tr>
+<tr>
+  <th th:text="#{msgs.product.name}">name</th>
+  <th th:text="#{msgs.product.value}">value</th>
+</tr>
 </thead>
 ```
 - Thymeleaf 3.0 이전의 경우는 성능상 이슈가 존재한다.
@@ -69,7 +70,7 @@ dependencies {
 ```
 - 해당 의존성 추가 후 부터는 뷰 파일 수정 후 재기동 없이 해당 파일을 리컴파일 하면 정상적으로 반영된다. (Ctrl+Shift+F9)
 - springboot 기동 시 아래 이미지처럼 restartedMain 문구가 뜨면 정상 적용된 것이다.
-![img.png](images/img3.png)
+  ![img.png](images/img3.png)
 
 ### 1.3. Gradle 라이브러리 의존성 확인 방법
 - intelliJ IDEA 사용 시 Gradle 탭의 dependencies를 통해 확인할 수 있다.
@@ -164,4 +165,18 @@ group = 'com.roman14'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 apply plugin: 'war' // plubin 'war' 적용
+```
+
+## 4. 스프링부트
+### 4.1. SpringPhysicalNamingStrategy
+- 테이블명, 필드명 등의 규칙 전략을 가지는 스프링의 클래스.
+- 구 hibernate의 경우 필드명 그대로 테이블과 필드명을 생성하였다.
+- 해당 클래스가 테이블, 명치의 규칙에서 최우선시 된다. 즉 특정 사유로 명칭의 규칙을 변경하고 싶다면 해당 클래스를 참고하면 된다.
+```yaml
+########### application.yml ############
+# 논리명
+spring.jpa.hibernate.naming.implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
+# 물리명
+spring.jpa.hibernate.naming.physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
 ```
