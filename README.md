@@ -54,7 +54,7 @@
 ```
 ```html
 <!-- SUCCESS -->
-<br></br>
+<br/>
 ```
 
 ### 1.2. Springboot DevTools
@@ -179,4 +179,24 @@ spring.jpa.hibernate.naming.implicit-strategy: org.springframework.boot.orm.jpa.
 
 # 물리명
 spring.jpa.hibernate.naming.physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+```
+
+### 4.2. 엔티티 매니저 의존성 주입
+- 엔티티 매니저 의존성 주입은 Repository 레벨에서 ```@PersistenceContext``` 어노테이션을 통해 주입받을 수 있다.
+```java
+@Repository
+public class MemberRepository
+{
+  @PersistenceContext
+  private EntityManager em;
+}
+```
+- 엔티티 매니저 팩토리의 의존성을 주입받고 싶다면 Repository 레벨에서 ```@PersistenceUnit``` 어노테이션을 통해 주입받을 수 있다.
+```java
+@Repository
+public class MemberRepository
+{
+  @PersistenceUnit
+  private EntityManagerFactory emf;
+}
 ```
