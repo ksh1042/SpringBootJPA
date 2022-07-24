@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@SuppressWarnings("RedundantThrows")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class MemberRepositoryTest
@@ -39,13 +38,14 @@ class MemberRepositoryTest
   public void save() throws Exception
   {
     // given
-    final Member member = new Member();
-    member.setName("user01");
-    member.setAddTime(LocalDateTime.now());
+    final Member member = Member.builder()
+      .name("name01")
+      .addTime(LocalDateTime.now())
+      .build();
 
     // when
     Long memberId = repository.save(member);
-    Member findMember = repository.find(memberId);
+    Member findMember = repository.findOne(memberId);
 
     // then
     Assertions.assertEquals(
