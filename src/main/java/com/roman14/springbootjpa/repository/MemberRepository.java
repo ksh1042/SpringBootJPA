@@ -1,6 +1,7 @@
 package com.roman14.springbootjpa.repository;
 
 import com.roman14.springbootjpa.entity.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class MemberRepository
 {
   /*
@@ -15,13 +17,11 @@ public class MemberRepository
   private EntityManagerFactory emf;
   */
 
-  // 엔티티 매니저
-  /**
-   * @PersistenceContext 스프링 부트에서 생성된 앤티티매니저 의존성 주입
-   */
+  /*
   @SuppressWarnings("JavaDoc")
   @PersistenceContext
-  private EntityManager em;
+   */
+  private final EntityManager em;
 
   public Long save(Member member)
   {

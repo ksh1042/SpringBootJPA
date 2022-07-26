@@ -200,3 +200,30 @@ public class MemberRepository
   private EntityManagerFactory emf;
 }
 ```
+- 스프링 부트 JPA에서 제공하는 ```@Autowired``` 어노테이션을 통해 의존성 주입이 가능하기 때문에, 생성자를 통한 의존성 주입도 가능하다. ```Lombok```을 사용하면 더욱 편리하다.
+```java
+@Repository
+@RequiredArgsConstructor
+public class MemberRepository
+{
+  private final EntityManager em;
+}
+```
+
+## 5. 성능최적화 팁
+### 5.1. 트랜잭션 성능 최적화
+- ```org.springframework.transaction.annotation.Transactional``` 어노테이션 사용하여 ```readOnly``` 옵션을 사용해 읽기 전용 메서드의 경우 더티체킹을 안하는 등 성능상 이점을 가져갈 수 있다.
+- 일반적인 서비스 클래스에 ```readOnly``` 트랜잭션을 추가하여 ```public``` 메서드에 공통 적용 후, 생성, 수정, 삭제 같이 ```readOnly```가 아닌 쓰기가 일어나는 트랜잭션의 경우 별도로 ```@Transactional``` 메서드를 추가하여 편리하게 적용할 수 있다. 반대로 쓰기가 자주 일어나는 커맨드성 서비스의 경우엔 반대로 적용하면 편리하다. 
+```java
+@Service
+@Transactional(readOnly = true)
+public class MemberService
+{
+  // 당연하게도 생성, 수정, 삭제의 경우에 readOnliy를 활성화 하면 DB에 반영이 안된다. 그러므로 별도로 @Transactional 어노테이션을 추가해준다.
+  @Transactional
+  public void signUp(Member member) { repository.save(member); }
+  
+  // 클래스에서 이미 읽기전용 트랜잭션이 적용이 되어있기 때문에 @Transactional 어노테이션 추가를 생략한다. 
+  public List<Member> findAll() { reurn new ArrayList<Member>(); }
+}
+```
