@@ -18,8 +18,8 @@ public class Category
   
   private String name;
   
-  @OneToMany(mappedBy = "item")
-  private List<CategoryItem> categoryItems = new ArrayList<>();
+//  @OneToMany(mappedBy = "item")
+//  private List<CategoryItem> categoryItems = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent_id")

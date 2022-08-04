@@ -22,10 +22,9 @@ public abstract class Item
 
   private Long stockQuantity;
 
-  @JoinTable
-
-  @OneToMany(mappedBy = "item")
-  private List<CategoryItem> categoryItems = new ArrayList<>();
+//  @JoinTable
+//  @OneToMany(mappedBy = "item")
+//  private List<CategoryItem> categoryItems = new ArrayList<>();
 
 }
 
