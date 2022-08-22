@@ -227,3 +227,35 @@ public class MemberService
   public List<Member> findAll() { reurn new ArrayList<Member>(); }
 }
 ```
+
+## 6. Spring JPA 팁
+### 6.1. FETCH JOIN
+```java
+public class Member
+{
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "team_id")
+  private Team team;
+}
+public class Team
+{
+  @OneToMany(mappedBy = "team")
+  private List<Member> memberList;
+}
+```
+- ```@Query```의 ```FETCH JOIN```을 이용한 FETCH JOIN
+```java
+public interface MemberRepository extends JpaRepository<Member, Long>
+{
+  @Query("SELECT m FROM Member m JOIN FETCH m.team t")
+  List<Member> findAllMembers();
+}
+```
+- ```@EntityGraph```를 이용한 FETCH JOIN
+```java
+public interface MemberRepository extends JpaRepository<Member, Long>
+{
+  @EntityGraph(attributePaths = {"team"})
+  List<Member> findAllMembers();
+}
+```
