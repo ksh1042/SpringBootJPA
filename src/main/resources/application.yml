@@ -7,10 +7,12 @@ spring:
     # - H2 DB? ?? ?? ???? ???? ???? ?
     # - H2 1.4 ???? MVCC ??? ???? ???? ??? ??? ??? ??.
 #    url: jdbc:h2:tcp://localhost/~/springbootjpa;MVCC=TRUE
+    #url: jdbc:oracle:thin:@xxx.xxx.xx.xx:pppp:xe
     url: jdbc:h2:tcp://localhost/~/springbootjpa
     username: sa
     password:
     driver-class-name: org.h2.Driver
+    #driver-class-name: org.h2.Driver
   jpa:
     #database-platform: org.hibernate.dialect.H2Dialect
     hibernate:

@@ -1,7 +1,7 @@
 package com.roman14.springbootjpa.entity;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @SuppressWarnings("ALL")
 @Entity
-@Getter @Builder
+@Getter @Setter
 public class Member
 {
   @Id @GeneratedValue
@@ -29,4 +29,5 @@ public class Member
 
   @Lob
   private String description;
+
 }

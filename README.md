@@ -259,3 +259,18 @@ public interface MemberRepository extends JpaRepository<Member, Long>
   List<Member> findAllMembers();
 }
 ```
+>```attributePaths```속성 값에 ```.```을 통해 그래프 탐색이 가능하다.
+> ```java
+> public class Team
+> {
+>   @ManyToOne(fetch = FetchType.LAZY)
+>   @JoinColumn(name = "department_id")
+>   private Department department;
+> }
+> 
+> public interface MemberRepository extends JpaRepository<Member, Long>
+> {
+>   @EntityGraph(attributePaths = {"team", "team.department"})
+>   List<Member> findAllMembers();
+> }
+> ```

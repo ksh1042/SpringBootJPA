@@ -38,10 +38,9 @@ class MemberRepositoryTest
   public void save() throws Exception
   {
     // given
-    final Member member = Member.builder()
-      .name("name01")
-      .addTime(LocalDateTime.now())
-      .build();
+    final Member member = new Member();
+    member.setName("name01");
+    member.setAddTime(LocalDateTime.now());
 
     // when
     Long memberId = repository.save(member);
