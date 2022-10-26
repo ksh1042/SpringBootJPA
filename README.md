@@ -274,3 +274,32 @@ public interface MemberRepository extends JpaRepository<Member, Long>
 >   List<Member> findAllMembers();
 > }
 > ```
+### 6.2. 테스트
+- 테스트 시 ```.../test/resources``` 디렉토리의 설정 파일을 우선적으로 읽어들인다. 
+- H2 DB를 사용할 경우 URL을 통해 In-Memory 모드로 동작시키도록 사용할 수 있다.([H2 공식페이지 참조](https://h2database.com/html/cheatSheet.html))
+```yaml
+spring:
+  datasource:
+    url: jdbc:h2:mem:springbootjpa
+```
+- 기본적으로 yml에 DB 설정이 없다면 DB는 In-Memory 모드로 동작한다.
+```yaml
+###### 아래의 내용이 불필요해진다. ######
+#spring:
+#  datasource:
+#    url: jdbc:h2:mem:springbootjpa
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#      properties:
+#        hibernate:
+#          format_sql: true
+logging:
+  level:
+    org-hibernate.SQL : debug
+    org.hibernate.type : trace
+
+```
