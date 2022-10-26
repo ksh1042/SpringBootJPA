@@ -10,17 +10,20 @@ import java.util.List;
 
 @SuppressWarnings("JavaDoc")
 @Service
-@Transactional  // 해당 클래스의 public 메서드들에 대해 트랜잭션이 걸린다.
+@Transactional(readOnly = true)
 @RequiredArgsConstructor  // Lombok을 통한 의존성 주입
 public class MemberService
 {
   private final MemberRepository memberRepository;
 
   // 회원가입
+  @Transactional
   public Long signUp(Member member)
   {
     validateDuplicatedMember(member);
-    return memberRepository.save(member);
+    memberRepository.save(member);
+
+    return member.getId();
   }
 
   /**
