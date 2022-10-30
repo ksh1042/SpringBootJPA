@@ -28,6 +28,9 @@ public class Category
   @OneToMany(mappedBy = "parent")
   private List<Category> childs = new ArrayList<>();
 
+  @ManyToMany
+  private List<Item> items = new ArrayList<>();
+
   public void addChild(Category category)
   {
     this.childs.add(category);

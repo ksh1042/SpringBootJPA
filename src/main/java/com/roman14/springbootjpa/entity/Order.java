@@ -1,6 +1,8 @@
 package com.roman14.springbootjpa.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "Orders")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order
 {
   @Id @GeneratedValue
@@ -33,5 +36,57 @@ public class Order
 
   @Enumerated(EnumType.STRING)
   private OrderStatus status;
+
+  public void setMember(Member member)
+  {
+    this.member = member;
+    member.getOrders().add(this);
+  }
+
+  public void addOrderItem(OrderItem orderItem)
+  {
+    this.orderItems.add(orderItem);
+    orderItem.setOrder(this);
+  }
+
+  public void setDelivery(Delivery delivery)
+  {
+    this.delivery = delivery;
+    delivery.setOrder(this);
+  }
+
+  public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems)
+  {
+    Order order = new Order();
+    order.setMember(member);
+    order.setDelivery(delivery);
+    for ( OrderItem orderItem : orderItems )
+    {
+      order.addOrderItem(orderItem);
+    }
+    order.setStatus(OrderStatus.ORDER);
+    order.setOrderDate(LocalDateTime.now());
+  }
+
+  public void cancel(Long id)
+  {
+    if(delivery.getStatus() == DeliveryStatus.COMP)
+    {
+      throw new IllegalStateException("arleady complete delivery");
+    }
+
+    this.setStatus(OrderStatus.CANCEL);
+    for ( OrderItem orderItem : this.orderItems )
+    {
+      orderItem.cancel();
+    }
+  }
+
+  public int getTotalPrice()
+  {
+    return this.orderItems.stream()
+      .mapToInt(OrderItem::getTotalPrice)
+      .sum();
+  }
 
 }
