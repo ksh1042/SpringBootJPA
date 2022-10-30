@@ -1,6 +1,7 @@
 package com.roman14.springbootjpa.entity.item;
 
-import com.roman14.springbootjpa.entity.CategoryItem;
+import com.roman14.springbootjpa.entity.Category;
+import com.roman14.springbootjpa.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,11 +21,36 @@ public abstract class Item
 
   private String name;
 
+  private int price;
+
   private Long stockQuantity;
+
+  @ManyToMany(mappedBy = "items")
+  private List<Category> categories = new ArrayList<>();
 
 //  @JoinTable
 //  @OneToMany(mappedBy = "item")
 //  private List<CategoryItem> categoryItems = new ArrayList<>();
 
+  /**
+   * 재고수량 증가
+   * @param quantity
+   */
+  public void addStockQuantity(int quantity)
+  {
+    this.stockQuantity += quantity;
+  }
+
+  public void minusStockQuantity(int quantity)
+  {
+    if(this.stockQuantity < quantity)
+    {
+      this.stockQuantity -= quantity;
+    }
+    else
+    {
+      throw new NotEnoughStockException("need more stock");
+    }
+  }
 }
 
