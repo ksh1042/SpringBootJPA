@@ -39,7 +39,7 @@ class OrderServiceTest
   }
 
   @Test
-  void order() throws Exception
+  void order()
   {
     // given
     final int orderCount = 3;
@@ -56,7 +56,7 @@ class OrderServiceTest
   }
 
   @Test
-  void cancel() throws Exception
+  void cancel()
   {
     // given
     final int orderCount = 3;
@@ -73,7 +73,7 @@ class OrderServiceTest
   }
 
   @Test
-  void orderOverflow() throws Exception
+  void orderOverflow()
   {
     // given
     final int orderCount = 11;
