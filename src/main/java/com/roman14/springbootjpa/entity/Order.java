@@ -66,14 +66,17 @@ public class Order
     }
     order.setStatus(OrderStatus.ORDER);
     order.setOrderDate(LocalDateTime.now());
+
+    return order;
   }
 
-  public void cancel(Long id)
+  public void cancel()
   {
-    if(delivery.getStatus() == DeliveryStatus.COMP)
-    {
-      throw new IllegalStateException("arleady complete delivery");
-    }
+    // TODO --> delivery status 추가 필요
+//    if(delivery.getStatus() == DeliveryStatus.COMP)
+//    {
+//      throw new IllegalStateException("arleady complete delivery");
+//    }
 
     this.setStatus(OrderStatus.CANCEL);
     for ( OrderItem orderItem : this.orderItems )
