@@ -23,7 +23,7 @@ public abstract class Item
 
   private int price;
 
-  private Long stockQuantity;
+  private int stockQuantity;
 
   @ManyToMany(mappedBy = "items")
   private List<Category> categories = new ArrayList<>();
@@ -43,7 +43,7 @@ public abstract class Item
 
   public void minusStockQuantity(int quantity)
   {
-    if(this.stockQuantity < quantity)
+    if(this.stockQuantity > quantity)
     {
       this.stockQuantity -= quantity;
     }
