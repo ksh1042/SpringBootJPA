@@ -1,5 +1,6 @@
 package com.roman14.springbootjpa.entity;
 
+import com.roman14.springbootjpa.controller.MemberForm;
 import lombok.Getter;
 
 import javax.persistence.Embeddable;
@@ -20,5 +21,10 @@ public class Address
     this.city = city;
     this.street = street;
     this.zipCode = zipCode;
+  }
+
+  public static Address of(MemberForm memberForm)
+  {
+    return new Address(memberForm.getCity(), memberForm.getStreet(), memberForm.getZipcode());
   }
 }
