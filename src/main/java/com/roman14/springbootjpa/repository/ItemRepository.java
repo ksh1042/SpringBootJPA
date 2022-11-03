@@ -21,6 +21,7 @@ public class ItemRepository
     }
     else
     {
+      // merge는 파라미터로 받은 객체를 영속성 컨텍스트에 등록시키지 않는다. return 된 객체가 영속성 컨텍스트에 등록된 상태.
       em.merge(item);
     }
   }
