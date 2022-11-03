@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +22,16 @@ public class MemberController
 {
   private final MemberService memberService;
 
+  @RequestMapping(value = "/", method = RequestMethod.GET)
+  public String listMember(Model model)
+  {
+    List<Member> memberList = memberService.findMembers();
+
+    model.addAttribute("members", memberList);
+
+    return "members/memberList";
+  }
+
   @RequestMapping(value = "/new", method = RequestMethod.GET)
   public String createForm(Model model)
   {
@@ -28,7 +39,6 @@ public class MemberController
 
     return "members/createMemberForm";
   }
-
   @RequestMapping(value = "/new", method = RequestMethod.POST)
   public String createMember(@Valid MemberForm memberForm, BindingResult result)
   {
@@ -44,5 +54,7 @@ public class MemberController
 
     return "redirect:/";
   }
+
+
 
 }
