@@ -8,9 +8,12 @@ import com.roman14.springbootjpa.entity.item.Item;
 import com.roman14.springbootjpa.repository.ItemRepository;
 import com.roman14.springbootjpa.repository.MemberRepository;
 import com.roman14.springbootjpa.repository.OrderRepository;
+import com.roman14.springbootjpa.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +50,8 @@ public class OrderService
     order.cancel();
   }
 
-//  public List<Order> findOrders(OrderSerach orderSerach)
-//  {
-//    return orderRepository.
-//  }
+  public List<Order> findOrders(OrderSearch orderSearch)
+  {
+    return orderRepository.findAllByString(orderSearch);
+  }
 }
