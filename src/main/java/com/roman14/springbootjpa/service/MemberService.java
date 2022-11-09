@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SuppressWarnings("JavaDoc")
@@ -21,6 +22,7 @@ public class MemberService
   public Long signUp(Member member)
   {
     validateDuplicatedMember(member);
+    member.setAddTime(LocalDateTime.now());
     memberRepository.save(member);
 
     return member.getId();
@@ -45,5 +47,14 @@ public class MemberService
   public Member findMember(Long id)
   {
     return memberRepository.findOne(id);
+  }
+
+  @Transactional
+  public Long update(Long memberId, String name)
+  {
+    Member member = memberRepository.findOne(memberId);
+    member.setName(name);
+
+    return member.getId();
   }
 }
