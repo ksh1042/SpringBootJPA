@@ -60,7 +60,10 @@
 </div> <!-- /container -->
 </body>
 <script>
-  function cancel(id) {
+  function cancel(id)
+  {
+    if( !confirm("주문을 취소하시겠습니까?") ) return;
+
     const form = document.createElement("form");
     form.setAttribute("method", "post");
     form.setAttribute("action", "/orders/" + id + "/cancel");
