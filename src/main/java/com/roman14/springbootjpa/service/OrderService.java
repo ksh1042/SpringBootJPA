@@ -50,6 +50,13 @@ public class OrderService
     order.cancel();
   }
 
+  public Order findOne(Long orderId)
+  {
+    Order findOrder = orderRepository.findOne(orderId);
+
+    return findOrder;
+  }
+
   public List<Order> findOrders(OrderSearch orderSearch)
   {
     return orderRepository.findAllByString(orderSearch);
