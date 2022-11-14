@@ -18,4 +18,20 @@ public class Delivery
 
   @Embedded
   private Address address;
+
+  public static Delivery from(Order order, Address address)
+  {
+    Delivery delivery = new Delivery();
+    delivery.setOrder(order);
+    delivery.setAddress(address);
+
+    return delivery;
+  }
+  public static Delivery from(Address address)
+  {
+    Delivery delivery = new Delivery();
+    delivery.setAddress(address);
+
+    return delivery;
+  }
 }

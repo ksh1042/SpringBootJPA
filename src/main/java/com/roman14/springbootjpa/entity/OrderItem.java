@@ -1,5 +1,6 @@
 package com.roman14.springbootjpa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.roman14.springbootjpa.entity.item.Item;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,10 +18,12 @@ public class OrderItem
   @Column(name = "order_item_id")
   private Long id;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "order_id")
   private Order order;
 
+  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "item_id")
   private Item item;

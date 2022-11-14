@@ -22,20 +22,20 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/orders")
+@RequestMapping("/api/simple-orders")
 public class OrderSimpleApiController
 {
   private final OrderRepository orderRepository;
 
   @Deprecated
-  @GetMapping("/v1/simple-orders")
+  @GetMapping("/v1")
   public List<Order> ordersV1()
   {
     // 재귀 참조 문제로 무한 루프가 발생한다.
     return orderRepository.findAllByString(new OrderSearch());
   }
 
-  @GetMapping("/v2/simple-orders")
+  @GetMapping("/v2")
   public CommonResponse<List<SimpleOrdersResponseDto>> ordersV2()
   {
     List<Order> orderList = orderRepository.findAllByString(new OrderSearch());
@@ -47,7 +47,7 @@ public class OrderSimpleApiController
     return CommonResponse.success(results);
   }
 
-  @GetMapping("/v3/simple_orders")
+  @GetMapping("/v3")
   public CommonResponse<List<SimpleOrdersResponseDto>> ordersV3()
   {
     List<Order> orderList = orderRepository.findAllWithMemberDelivery();
