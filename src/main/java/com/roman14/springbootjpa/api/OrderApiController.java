@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -49,6 +50,33 @@ public class OrderApiController
   public CommonResponse<List<OrderDto>> ordersV2()
   {
     List<Order> orderList = orderRepository.findAllByString(new OrderSearch());
+
+    List<OrderDto> results = orderList.stream()
+      .map(OrderDto::from)
+      .collect(Collectors.toList());
+
+    return CommonResponse.success(results);
+  }
+
+  @GetMapping("/v3/list")
+  public CommonResponse<List<OrderDto>> ordersV3()
+  {
+    List<Order> orderList = orderRepository.findAllWithItems();
+
+    List<OrderDto> results = orderList.stream()
+      .map(OrderDto::from)
+      .collect(Collectors.toList());
+
+    return CommonResponse.success(results);
+  }
+
+  @GetMapping("/v3.1/list")
+  public CommonResponse<List<OrderDto>> ordersV4(
+    @RequestParam(value = "offset", defaultValue = "0") int offset,
+    @RequestParam(value = "limit", defaultValue = "0") int limit
+  )
+  {
+    List<Order> orderList = orderRepository.findAllWithMemberDelivery(offset, limit);
 
     List<OrderDto> results = orderList.stream()
       .map(OrderDto::from)
