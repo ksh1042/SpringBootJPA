@@ -7,8 +7,10 @@ import com.roman14.springbootjpa.entity.OrderItem;
 import com.roman14.springbootjpa.entity.OrderStatus;
 import com.roman14.springbootjpa.repository.OrderRepository;
 import com.roman14.springbootjpa.repository.OrderSearch;
+import com.roman14.springbootjpa.repository.order.query.OrderFlatDto;
+import com.roman14.springbootjpa.repository.order.query.OrderQueryDto;
+import com.roman14.springbootjpa.repository.order.query.OrderQueryRepository;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 public class OrderApiController
 {
   private final OrderRepository orderRepository;
+  private final OrderQueryRepository orderQueryRepository;
 
   @GetMapping("/v1/list")
   public CommonResponse<List<Order>> ordersV1()
@@ -71,7 +74,7 @@ public class OrderApiController
   }
 
   @GetMapping("/v3.1/list")
-  public CommonResponse<List<OrderDto>> ordersV4(
+  public CommonResponse<List<OrderDto>> ordersV31(
     @RequestParam(value = "offset", defaultValue = "0") int offset,
     @RequestParam(value = "limit", defaultValue = "0") int limit
   )
@@ -85,7 +88,27 @@ public class OrderApiController
     return CommonResponse.success(results);
   }
 
-  @Getter @Builder
+  @GetMapping("/v4/list")
+  public CommonResponse<List<OrderQueryDto>> ordersV4()
+  {
+    return CommonResponse.success(orderQueryRepository.findOrderQueryDtos());
+  }
+
+  @GetMapping("/v5/list")
+  public CommonResponse<List<OrderQueryDto>> ordersV5()
+  {
+    return CommonResponse.success(orderQueryRepository.findAllByDtos());
+  }
+
+  @GetMapping("/v6/list")
+  public CommonResponse<List<OrderFlatDto>> ordersV6()
+  {
+    // 페이징 가능하나, 페이징이 order 기준이 아닌 orderItem 기준으로 되는 문제가 발생
+    return CommonResponse.success(orderQueryRepository.findAllByDtosFlat());
+  }
+
+  @Getter
+  @Builder
   static class OrderDto
   {
     private Long orderId;
@@ -110,7 +133,8 @@ public class OrderApiController
     }
   }
 
-  @Getter @Builder
+  @Getter
+  @Builder
   static class OrderItemDto
   {
     private String itemName;
