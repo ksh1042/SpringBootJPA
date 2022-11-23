@@ -57,6 +57,8 @@
 <br/>
 ```
 
+---
+
 ### 1.2. Springboot DevTools
 - ```build.gradle```에 해당 의존성을 추가하면 뷰 파일 수정 시 매 번 재기동해이햐는 번거로움을 덜 수 있다.
 ```
@@ -124,6 +126,8 @@ void test(){
 }
 ```
 
+---
+
 ### 2.2. 쿼리 파라미터 출력하기
 - application.yml 파일에 ```logging:level:org.hibernate.type : trace``` 프로퍼티를 추가하면 로그 라인으로 파라미터 바인딩이 출력된다.
 ```yaml
@@ -181,6 +185,8 @@ spring.jpa.hibernate.naming.implicit-strategy: org.springframework.boot.orm.jpa.
 spring.jpa.hibernate.naming.physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
 ```
 
+---
+
 ### 4.2. 엔티티 매니저 의존성 주입
 - 엔티티 매니저 의존성 주입은 Repository 레벨에서 ```@PersistenceContext``` 어노테이션을 통해 주입받을 수 있다.
 ```java
@@ -228,6 +234,8 @@ public class MemberService
 }
 ```
 
+---
+
 ### 5.2. OSIV(Open Session In View) 설정
 - 기존의 JPA는 트랜잭션이 발생한 시점에서 DB 커넥션이 생성되며, 요청이 완전히 종료될 때 까지 영속성 컨텍스트를 활용하기 위해 커넥션을 유지하므로 리소스 낭비가 심한 편이다.
 - 아래와 같이 설정하여 OSIV 기능을 해제할 수 있다. 해제하면 트랜잭션 범위 밖에서는 영속성 컨텍스트를 활용한 Lazy-loading, dirty-checking 등이 불가능하니 주의한다.
@@ -236,6 +244,8 @@ spring:
   jpa:
     open-in-view: false
 ```
+
+---
 
 ### 5.3. BatchSize를 통한 N+1 문제 해결
 
