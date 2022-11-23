@@ -237,6 +237,39 @@ spring:
     open-in-view: false
 ```
 
+### 5.3. BatchSize를 통한 N+1 문제 해결
+
+- 컬렉션을 조회할 때에 여러번 조회할 필요 없이 BatchSize를 통해 JPA에서 컬렉션을 조회할 때 쿼리에 IN 조건을 생성해서 여러 컬렉션 내용을 쿼리를 쉽게 가져오게 할 수 있다.
+
+> - 어플리케이션 전역 설정의 경우 아래와 같이 스프링 설정 파일(yml, properties)에 정의한다.
+> ```yaml
+> # application.yml
+> spring:
+>   jpa:
+>     properties:
+>       hibernate:
+>         default_batch_fetch_size: 30
+>         jdbc:
+>           batch_size: 100
+> ```
+
+> - 엔티티 별로 별도로 적용 하고 싶을 경우 ```@BatchSize``` 어노테이션을 통해 설정한다.
+>
+> ```java
+> @Entity
+> public class Test
+> {
+>   @BatchSize(size = 30)
+>   @OneToMany(mappedBy = "test")
+>   private List<TestItem> testItems;
+> }
+> ```
+
+- 위 설정을 적용 하면, 컬렉션 조회에 IN 조건이 추가된 쿼리가 발생 하며, ceil(resultRows / BatchSize) + 1 갯수만큼으로 DB 요청을 획기적으로 줄일 수 있다.
+> - BatchSize = 30
+> - ResultRows = 220
+> - 결과 : 기존 N+1의 문제를 해결하지 않았을 경우 220+1 번의 쿼리가 발생되겠지만, 총 9번의 쿼리로 성능이 개선되었다.
+
 ## 6. Spring JPA 팁
 ### 6.1. FETCH JOIN
 ```java
@@ -315,41 +348,6 @@ logging:
     org.hibernate.type : trace
 
 ```
-
----
-
-### 6.3. BatchSize를 통한 N+1 문제 해결
-
-- 컬렉션을 조회할 때에 여러번 조회할 필요 없이 BatchSize를 통해 JPA에서 컬렉션을 조회할 때 쿼리에 IN 조건을 생성해서 여러 컬렉션 내용을 쿼리를 쉽게 가져오게 할 수 있다.
-
-> - 어플리케이션 전역 설정의 경우 아래와 같이 스프링 설정 파일(yml, properties)에 정의한다.
-> ```yaml
-> # application.yml
-> spring:
->   jpa:
->     properties:
->       hibernate:
->         default_batch_fetch_size: 30
->         jdbc:
->           batch_size: 100
-> ```
-
-> - 엔티티 별로 별도로 적용 하고 싶을 경우 ```@BatchSize``` 어노테이션을 통해 설정한다.
-> 
-> ```java
-> @Entity
-> public class Test
-> {
->   @BatchSize(size = 30)
->   @OneToMany(mappedBy = "test")
->   private List<TestItem> testItems;
-> }
-> ```
-
-- 위 설정을 적용 하면, 컬렉션 조회에 IN 조건이 추가된 쿼리가 발생 하며, ceil(resultRows / BatchSize) + 1 갯수만큼으로 DB 요청을 획기적으로 줄일 수 있다.
-> - BatchSize = 30
-> - ResultRows = 220
-> - 결과 : 기존 N+1의 문제를 해결하지 않았을 경우 220+1 번의 쿼리가 발생되겠지만, 총 9번의 쿼리로 성능이 개선되었다.
 
 
 ## 7. 트러블슈팅
