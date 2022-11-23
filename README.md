@@ -4,6 +4,7 @@
 ## 목표
 - JPA와 SpringBoot를 접목시킨 웹 어플리케이션 개발 방법 복습
 - Swagger를 통한 통합 테스트 환경 복습
+- 핵심 요약
 - DDD 개발법 학습
   ![img.png](images/img4.png)
 
