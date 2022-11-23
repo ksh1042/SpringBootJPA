@@ -228,6 +228,15 @@ public class MemberService
 }
 ```
 
+### 5.2. OSIV(Open Session In View) 설정
+- 기존의 JPA는 트랜잭션이 발생한 시점에서 DB 커넥션이 생성되며, 요청이 완전히 종료될 때 까지 영속성 컨텍스트를 활용하기 위해 커넥션을 유지하므로 리소스 낭비가 심한 편이다.
+- 아래와 같이 설정하여 OSIV 기능을 해제할 수 있다. 해제하면 트랜잭션 범위 밖에서는 영속성 컨텍스트를 활용한 Lazy-loading, dirty-checking 등이 불가능하니 주의한다.
+```yaml
+spring:
+  jpa:
+    open-in-view: false
+```
+
 ## 6. Spring JPA 팁
 ### 6.1. FETCH JOIN
 ```java
@@ -274,6 +283,9 @@ public interface MemberRepository extends JpaRepository<Member, Long>
 >   List<Member> findAllMembers();
 > }
 > ```
+
+---
+
 ### 6.2. 테스트
 - 테스트 시 ```.../test/resources``` 디렉토리의 설정 파일을 우선적으로 읽어들인다. 
 - H2 DB를 사용할 경우 URL을 통해 In-Memory 모드로 동작시키도록 사용할 수 있다.([H2 공식페이지 참조](https://h2database.com/html/cheatSheet.html))
@@ -303,6 +315,8 @@ logging:
     org.hibernate.type : trace
 
 ```
+
+---
 
 ### 6.3. BatchSize를 통한 N+1 문제 해결
 
@@ -343,6 +357,8 @@ logging:
 ### 7.1. BatchSize가 동작하지 않을 경우
 
 - 스프링 설정 파일이 yml로 작성된 경우 **들여쓰기**를 확인한다. #[인프런) BatchSize 가 동작하지...](https://www.inflearn.com/questions/692400) 질문글을 참고
+
+---
 
 ### 7.2. querydsl 빌드가 되지 않는 경우
 - ```Unable to load class "com.querydsl.apt.jpa.JPAAnnotationProcessor"```
