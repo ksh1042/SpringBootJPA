@@ -343,3 +343,72 @@ logging:
 ### 7.1. BatchSize가 동작하지 않을 경우
 
 - 스프링 설정 파일이 yml로 작성된 경우 **들여쓰기**를 확인한다. #[인프런) BatchSize 가 동작하지...](https://www.inflearn.com/questions/692400) 질문글을 참고
+
+### 7.2. querydsl 빌드가 되지 않는 경우
+- ```Unable to load class "com.querydsl.apt.jpa.JPAAnnotationProcessor"```
+- ```Unable to load class 'com.mysema.codegen.model.Type'.```
+- 위 오류가 발생할 경우 gradle 버전을 확인하여 5.0 이상일 경우 설정을 추가해야한다. intelliJ idea의 경우 gradle 버전 확인 방법은 아래와 같다. <br>
+
+![img.png](img.png)
+
+- 추가해야 할 설정은 아래와 같으며 주석처리 되지 않은 부분이 핵심이다.
+```groovy
+buildscript {
+  ext {
+    queryDslVersion = "5.0.0"
+  }
+}
+
+//plugins {
+//  id 'org.springframework.boot' version '2.7.1'
+//  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+//  id 'java'
+  id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+//}
+
+//group = 'com.roman14'
+//version = '0.0.1-SNAPSHOT'
+//sourceCompatibility = '11'
+//
+//configurations {
+//  compileOnly {
+//    extendsFrom annotationProcessor
+//  }
+//}
+//
+//repositories {
+//  mavenCentral()
+//}
+
+//dependencies {
+  // ...
+  // 따옴표를 조심해야한다. 작은 따옴표를 사용 할 경우 ${} 인식이 불가능하므로 오류가 발생한다.
+  implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+  annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+  // ...
+//}
+
+//tasks.named('test') {
+//  useJUnitPlatform()
+//}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+  jpa = true
+  querydslSourcesDir = querydslDir
+}
+sourceSets {
+  main.java.srcDir querydslDir
+}
+compileQuerydsl{
+  options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+  querydsl.extendsFrom compileClasspath
+}
+```
